@@ -69,9 +69,10 @@ void TestLua::testLuaDestructors()
 
 	lua_State *L = luaL_newstate();
 	lua_cpcall(L, [](lua_State *L) -> int {
-		DestructorDetector d(reinterpret_cast<bool*>(lua_touserdata(L, 1)));
-		luaL_error(L, "error");
-		return 0;
+		{
+		    DestructorDetector d(reinterpret_cast<bool*>(lua_touserdata(L, 1)));
+		}
+		return luaL_error(L, "error");
 	}, &did_destruct);
 	lua_close(L);
 
